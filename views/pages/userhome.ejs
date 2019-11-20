@@ -1,0 +1,190 @@
+<html>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <style>
+        .card {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                max-width: 300px;
+                margin: auto;
+                text-align: center;
+                font-family: arial;
+                }
+
+                .price {
+                color: grey;
+                font-size: 22px;
+                }
+
+                .card button {
+                border: none;
+                outline: 0;
+                padding: 12px;
+                color: white;
+                background-color: #000;
+                text-align: center;
+                cursor: pointer;
+                width: 100%;
+                font-size: 18px;
+                }
+
+                .card button:hover {
+                opacity: 0.7;
+                }
+    </style>
+<head>
+</head>
+<body>
+        <div class="container">
+                <h2 style="text-align: center;">Product List</h2>
+                        <div class="row">
+                                <div class="col-12 col-md-6 ">
+                                        <button style="float: left;" class="btn btn-success" data-toggle="modal" data-target="#myModalAdd">Add New Product</button>
+                                </div>
+                                    <div class="col-12 col-md-6 ">
+                                            <form action="/order_screen" method="post">
+                                                <button style="float: right;" class="btn btn-success" type="submit">Order Management Screen</button>
+                                            </form>
+                                    </div>
+                        </div>
+                <br>
+                    
+                <table class="table table-striped" id="mytable">
+                  <thead>
+                    <tr>
+                      <th>Product Name</th>
+                      <th>Composition</th>
+                      <th>Color</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                     <% for(var i=0; i < product_data.length; i++) { %>
+                    <tr>
+                      <td><%= product_data[i].Product_Name %></td>
+                      <td><%= product_data[i].Composition %></td>
+                      <td><%= product_data[i].Color %></td>
+                      <td>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-info edit" data-name="<%= product_data[i].Product_Name %>" data-composition="<%= product_data[i].Composition %>" data-color="<%= product_data[i].Color %>">Edit</a>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger delete"  data-name="<%= product_data[i].Product_Name %>">Delete</a>
+                      </td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+        </div>
+
+      
+      <form action="/save" method="post">
+        <div class="modal fade" id="myModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+           <div class="modal-content">
+             <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Add New Product</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" name="product_id" class="form-control" placeholder="Product ID" required>
+                    </div>
+
+
+               <div class="form-group">
+                   <input type="text" name="product_name" class="form-control" placeholder="Product Name" required>
+               </div>
+
+               <div class="form-group">
+                    <input type="text" name="composition" class="form-control" placeholder="Composition" required>
+                </div>
+ 
+               <div class="form-group">
+                   <input type="text" name="color" class="form-control" placeholder="Color" required>
+               </div>
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Save</button>
+             </div>
+           </div>
+         </div>
+        </div>
+     </form>
+ 
+    
+   <form action="/update" method="post">
+       <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                  <input type="text" name="product_name" class="form-control product_name" placeholder="Product Name" required>
+              </div>
+
+              <div class="form-group">
+                    <input type="text" name="composition" class="form-control composition" placeholder="Composition" required>
+                </div>
+ 
+              <div class="form-group">
+                  <input type="text" name="color" class="form-control color" placeholder="Color" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="hidden" name="id" class="product_id">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+          </div>
+        </div>
+       </div>
+  </form>
+ 
+     
+      <form id="add-row-form" action="/delete" method="post">
+         <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Delete Product</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                   </div>
+                   <div class="modal-body">
+                                                 <strong>Are you sure to delete this data?</strong>
+                   </div>
+                   <div class="modal-footer">
+                                            <input type="hidden" name="product_name" class="form-control product_name" required>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Delete</button>
+                   </div>
+                    </div>
+            </div>
+         </div>
+        </form>
+
+        <script>
+                $(document).ready(function(){
+                    $('#mytable').on('click','.edit',function(){
+                    var product_name = $(this).data('name');
+                    var composition = $(this).data('composition');
+                    var color = $(this).data('color');
+                    $('#EditModal').modal('show');
+                    $('.product_name').val(product_name);
+                    $('.composition').val(composition);
+                    $('.color').val(color);
+                  });
+                    $('#mytable').on('click','.delete',function(){
+                    var product_name = $(this).data('name');
+                    $('#DeleteModal').modal('show');
+                    $('.product_name').val(product_name);
+                  });
+                });
+        </script>
+</body>
+</html>

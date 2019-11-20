@@ -1,0 +1,79 @@
+<html>
+<head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+        <div class="container">
+                <h2 style="text-align: center;">Order Management Screen</h2>
+                    
+                <table class="table table-striped" id="mytable">
+                  <thead>
+                    <tr>
+                      <th>Product Code</th>
+                      <th>Order Type</th>
+                      <th>Delivery Distance</th>
+                      <th>Delivery Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                     <% for(var i=0; i < product_data.length; i++) { %>
+                    <tr>
+                      <td><%= product_data[i].Product_Code %></td>
+                      <td><%= product_data[i].Order_Type %></td>
+                      <td><%= product_data[i].Delivery_Distance %></td>
+
+                        <% var type = product_data[i].Order_Type;
+                            var delivery_distance = product_data[i].Delivery_Distance;
+                            var air = 0;
+                            var land = 0;
+                            var distance = delivery_distance.split(" ");
+
+                            if(!delivery_distance.includes("km")){
+                                distance[0] = distance[0]/1000;
+                            }
+
+                            if(distance[0] > 1000){
+                                air = distance[0];
+                                land = distance[0] * 12;
+                                if(type.includes("swatch")){
+                                    %> 
+                                    <td>By Air : <%= parseInt(air/1440) + 1 %>d <%= parseInt((air/60)%24) %>h <%= air%60 %>mins, By Land: <%= parseInt(land/1440) + 1 %>d <%= parseInt((land/60)%24) %>h <%= land%60 %>mins</td>
+                                    <%
+                                }else{
+                                    if(type.includes("sample")){
+                                        %>
+                                        <td>By Air : <%= parseInt(air/1440) + 3 %>d <%= parseInt((air/60)%24) %>h <%= air%60 %>mins, By Land: <%= parseInt(land/1440) + 3 %>d <%= parseInt((land/60)%24) %>h <%= land%60 %>mins</td>
+                                        <%
+                                    }else{
+                                        %> 
+                                        <td>By Air : <%= parseInt(air/1440) + 15 %>d <%= parseInt((air/60)%24) %>h <%= air%60 %>mins, By Land: <%= parseInt(land/1440) + 15 %>d <%= parseInt((land/60)%24) %>h <%= land%60 %>mins</td>
+                                        <%
+                                    }
+                                }
+                            }else{
+                                land = distance[0] * 12;
+                                if(type.includes("swatch")){
+                                    %> 
+                                    <td>By Land: <%= parseInt(land/1440) + 1 %>d <%= parseInt((land/60)%24) %>h <%= land%60 %>mins</td>
+                                    <%
+                                }else{
+                                    if(type.includes("sample")){
+                                        %>
+                                        <td>By Land: <%= parseInt(land/1440) + 3 %>d <%= parseInt((land/60)%24) %>h <%= land%60 %>mins</td>
+                                        <%
+                                    }else{
+                                        %> 
+                                        <td>By Land: <%= parseInt(land/1440) + 15 %>d <%= parseInt((land/60)%24) %>h <%= land%60 %>mins</td>
+                                        <%
+                                    }
+                                }
+                            }
+                        
+                        %>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+        </div>
+</body>
+</html>
